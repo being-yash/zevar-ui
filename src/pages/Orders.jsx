@@ -3,6 +3,7 @@ import { AdminLayout } from "../components/layouts/AdminLayout";
 import OrderCard from "../components/OrderCard";
 import { getOrders, updateOrderPaymentStatus } from "../api/orders";
 
+
 const STATUS_TABS = ["pending", "approved", "shipped", "delivered"];
 
 function getOrdersByProductStatus(orders, status) {
@@ -136,16 +137,14 @@ export default function Orders() {
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
                 Amount
               </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
-                Payment
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
-                Order Status
-              </th>
+              {activeTab === "pending" && (
+                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
+                  Payment
+                </th>
+              )}
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
                 Created
               </th>
-              <th className="px-4 py-3"></th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
                 Select
               </th>
@@ -155,6 +154,7 @@ export default function Orders() {
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">
                 Product Name
               </th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">

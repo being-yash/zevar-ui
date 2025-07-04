@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const STATUS_OPTIONS = [
   { value: "paid", label: "Paid", color: "bg-green-100 text-green-700" },
-  { value: "partial", label: "Partial", color: "bg-yellow-100 text-yellow-700" },
+  // { value: "partial", label: "Partial", color: "bg-yellow-100 text-yellow-700" },
   { value: "unpaid", label: "Unpaid", color: "bg-red-100 text-red-700" },
 ];
 

@@ -22,3 +22,10 @@ export async function deleteOrder(orderId) {
 export async function deleteProduct(productId) {
   return api.delete(`/product-details/${productId}`);
 }
+
+// Update individual product price
+export const updateProductPrice = async (productDetailId, customerPrice) => {
+  return axios.patch(`/product-details/${productDetailId}/price`, {
+    customer_price: customerPrice,
+  });
+};

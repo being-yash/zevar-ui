@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import api from "../api";
 
 export default function AddVendorForm({ onSuccess }) {
@@ -21,7 +22,6 @@ export default function AddVendorForm({ onSuccess }) {
     is_deleted: false,
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +38,7 @@ export default function AddVendorForm({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    
     try {
       await api.post("/vendors", form);
       setForm({
@@ -56,9 +56,9 @@ export default function AddVendorForm({ onSuccess }) {
         is_deleted: false,
       });
       onSuccess?.();
-      alert("Vendor added!");
+      toast.success("Vendor added successfully!");
     } catch (err) {
-      setError("Failed to add vendor.");
+      toast.error("Failed to add vendor. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,6 @@ export default function AddVendorForm({ onSuccess }) {
   return (
     <form className="max-w-lg mx-auto bg-white p-6 rounded-xl shadow" onSubmit={handleSubmit}>
       <h2 className="text-xl font-bold mb-4">Add Vendor</h2>
-      {error && <div className="mb-3 text-red-600">{error}</div>}
       <div className="mb-3">
         <label className="block text-sm font-medium">User Name</label>
         <input name="user.name" value={form.user.name} onChange={handleChange} className="w-full border px-3 py-2 rounded" required />

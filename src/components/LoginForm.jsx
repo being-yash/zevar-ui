@@ -1,19 +1,24 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginForm() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setIsLoading(true);
+    
     try {
       await login(email, password);
-    } catch {
-      setError("Invalid credentials");
+      toast.success("Login successful! Welcome back.");
+    } catch (error) {
+      toast.error("Invalid credentials. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -23,12 +28,6 @@ export default function LoginForm() {
             <img src="/logo.png" alt="Zevar Logo" className="h-12" /> {/* optional branding */}
         </div>
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
-
-        {error && (
-            <div className="text-red-600 text-sm text-center mb-4 bg-red-100 px-4 py-2 rounded">
-            {error}
-            </div>
-        )}
 
         <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -56,9 +55,10 @@ export default function LoginForm() {
 
         <button
             type="submit"
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-md shadow transition duration-150"
+            disabled={isLoading}
+            className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-teal-400 disabled:cursor-not-allowed text-white font-semibold py-2 rounded-md shadow transition duration-150"
         >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
         </button>
     </form>
   );

@@ -56,7 +56,7 @@ export default function OrderActions({ order, onRefresh, activeTab, showVendorMo
           icon={<Truck className="h-4 w-4" />}
           label="Assign Vendor"
           color="gray"
-          onClick={ () => toast.success("Confirm Payment First!")} 
+          onClick={ () => toast.error("Confirm Payment First!")} 
           disabled
         />
       )}

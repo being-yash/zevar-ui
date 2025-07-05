@@ -13,7 +13,19 @@ import AddVendorForm from "./components/AddVendorForm";
 import Settings from "./pages/Settings";
 
 function App() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <ThemeProvider>
+        <div className="flex justify-center items-center h-screen bg-gray-100">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+        </div>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider>
       <Router>
@@ -30,7 +42,11 @@ function App() {
                 </AdminLayout>
               }
             />
-            <Route path="/settings" element={ <Settings /> } />
+            <Route path="/settings" element={
+              <AdminLayout>
+                <Settings />
+              </AdminLayout>
+            } />
             {/* Add more routes as needed */}
           </Routes>
         ) : (

@@ -11,21 +11,11 @@ import OrderDetail from "./pages/OrderDetail";
 import AdminLayout from "./components/layouts/AdminLayout";
 import AddVendorForm from "./components/AddVendorForm";
 import Settings from "./pages/Settings";
+import Vendors from "./pages/Vendors";
+import Transactions from "./pages/Transactions";
 
 function App() {
-  const { user, loading } = useAuth();
-
-  // Show loading spinner while checking authentication
-  if (loading) {
-    return (
-      <ThemeProvider>
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
-        </div>
-      </ThemeProvider>
-    );
-  }
-
+  const { user } = useAuth();
   return (
     <ThemeProvider>
       <Router>
@@ -34,6 +24,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<OrderDetail />} />
+            <Route path="/vendors" element={<Vendors />} />
+            <Route path="/transactions" element={<Transactions />} />
             <Route
               path="/vendors/add"
               element={
@@ -42,11 +34,7 @@ function App() {
                 </AdminLayout>
               }
             />
-            <Route path="/settings" element={
-              <AdminLayout>
-                <Settings />
-              </AdminLayout>
-            } />
+            <Route path="/settings" element={ <Settings /> } />
             {/* Add more routes as needed */}
           </Routes>
         ) : (
@@ -64,9 +52,16 @@ function App() {
             },
             success: {
               duration: 3000,
-              theme: {
-                primary: 'green',
-                secondary: 'black',
+              style: {
+                background: '#10B981',
+                color: '#fff',
+              },
+            },
+            error: {
+              duration: 4000,
+              style: {
+                background: '#EF4444',
+                color: '#fff',
               },
             },
           }}

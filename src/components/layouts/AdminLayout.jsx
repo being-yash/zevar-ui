@@ -5,6 +5,8 @@ import { Link, useLocation } from "react-router-dom";
 const sidebarLinks = [
   { name: "Dashboard", icon: "🏠", path: "/" },
   { name: "Orders", icon: "📦", path: "/orders" },
+  { name: "Transactions", icon: "💳", path: "/transactions" },
+  { name: "Vendors", to: "/vendors", icon: "🧑‍🏭", path: "/vendors" },
   { name: "Users", icon: "👥", path: "/users" },
   { name: "Add Vendor", icon: "➕", path: "/vendors/add" }, // <-- Add this line
   { name: "Settings", icon: "⚙️", path: "/settings" },

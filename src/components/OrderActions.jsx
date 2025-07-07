@@ -1,12 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { updateOrderPaymentStatus } from "../api/orders";
-import { Eye, Edit, CheckCircle, XCircle, Truck } from "lucide-react";
+import { Eye, Edit, CheckCircle, XCircle, Truck, Package } from "lucide-react";
 import toast from "react-hot-toast";
 
-export default function OrderActions({ order, onRefresh, activeTab, showVendorModal, setShowVendorModal }) {
+export default function OrderActions({ order, onRefresh, activeTab, showVendorModal, setShowVendorModal, setShowShippingModal, setShowDeliveredModal, checkedProductIds = [] }) {
   const navigate = useNavigate();
   const canAssign = order.payment_status === "paid";
+
+  // Debug log to see what we're working with
+  console.log("OrderActions - activeTab:", activeTab, "order.payment_status:", order.payment_status, "checkedProductIds:", checkedProductIds);
 
   const handleConfirm = async () => {
     try {
@@ -47,7 +50,7 @@ export default function OrderActions({ order, onRefresh, activeTab, showVendorMo
           icon={<Truck className="h-4 w-4" />}
           label="Assign Vendor"
           color="indigo"
-          onClick={() => navigate(`/orders/${order.id}/assign-vendor`)}
+          onClick={() => setShowVendorModal(true)}
         />
       )}
 
@@ -56,8 +59,32 @@ export default function OrderActions({ order, onRefresh, activeTab, showVendorMo
           icon={<Truck className="h-4 w-4" />}
           label="Assign Vendor"
           color="gray"
-          onClick={ () => toast.error("Confirm Payment First!")} 
-          disabled
+          onClick={() => toast.error("Confirm Payment First!")} 
+          disabled={true}
+        />
+      )}
+
+      {activeTab === "approved" && (
+        <FancyButton
+          icon={<Truck className="h-4 w-4" />}
+          label={`Add Shipping${checkedProductIds.length > 0 ? ` (${checkedProductIds.length})` : " (All)"}`}
+          color="indigo"
+          onClick={() => {
+            console.log("Add Shipping clicked for order:", order.id, "with products:", checkedProductIds);
+            setShowShippingModal(true);
+          }}
+        />
+      )}
+
+      {activeTab === "shipped" && (
+        <FancyButton
+          icon={<Package className="h-4 w-4" />}
+          label={`Mark Delivered${checkedProductIds.length > 0 ? ` (${checkedProductIds.length})` : " (All)"}`}
+          color="green"
+          onClick={() => {
+            console.log("Mark Delivered clicked for order:", order.id, "with products:", checkedProductIds);
+            setShowDeliveredModal(true);
+          }}
         />
       )}
 
@@ -90,8 +117,7 @@ export default function OrderActions({ order, onRefresh, activeTab, showVendorMo
     </div>
   );
 }
-  // 🎨 Reusable Fancy Button
-function FancyButton({ icon, label, color = "gray", onClick }) {
+function FancyButton({ icon, label, color = "gray", onClick, disabled }) {
   const base =
     "inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium shadow transition";
   const variants = {
@@ -103,63 +129,13 @@ function FancyButton({ icon, label, color = "gray", onClick }) {
   };
 
   return (
-    <button onClick={onClick} className={`${base} ${variants[color]}`}>
+    <button 
+      onClick={onClick} 
+      disabled={disabled}
+      className={`${base} ${variants[color]} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
       {icon}
       {label}
     </button>
   );
 }
-
-
-{/* <div className="flex flex-wrap gap-2"> */}
-      {/* <button
-        className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1.5 rounded text-sm"
-        onClick={() => navigate(`/orders/${order.id}`)}
-      >
-        View
-      </button> */}
-
-      {/* {activeTab === "pending" && canAssign && (
-        <button
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded text-sm"
-          onClick={() => setShowVendorModal(true)}
-        >
-          Assign Vendor
-        </button>
-      )}
-      
-      {activeTab === "pending" && (
-        <button
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded text-sm"
-            onClick={() => navigate(`/orders/${order.id}/edit`)}
-        >
-            Edit Order
-        </button>
-      )}
-
-      {!canAssign && (
-        <button
-          className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1.5 rounded text-sm cursor-not-allowed"
-          disabled
-        >
-          Assign Vendor (Confirm Payment First)
-        </button>
-      )}
-      {order.payment_status != "paid" && ( 
-      <button
-        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-sm"
-        onClick={handleConfirm}
-      >
-        Confirm Payment
-      </button>
-      )}
-
-      {(activeTab === "pending" || activeTab === "approved") && (
-      <button
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm"
-        onClick={handleCancel}
-      >
-        Cancel Order
-      </button>
-      )}
-    </div> */}

@@ -24,8 +24,22 @@ export async function deleteProduct(productId) {
 }
 
 // Update individual product price
-export const updateProductPrice = async (productDetailId, customerPrice) => {
-  return axios.patch(`/product-details/${productDetailId}/price`, {
-    customer_price: customerPrice,
+export const updateProductPrice = async (productId, customer_price) => {
+  return await api.patch(`/product-details/${productId}/pricing`, {
+    customer_price: parseFloat(customer_price),
   });
 };
+
+export const updateShippingInfo = async (payload) => {
+  const res = await api.post("/products/update-shipping", payload);
+  return res.data;
+};
+
+export const markProductsDelivered = async (productIds, deliveryDate, remarks = "") => {
+  return await api.post("/product-details/deliver", {
+    product_ids: productIds,
+    delivery_date: deliveryDate,
+    remarks: remarks
+  });
+};
+

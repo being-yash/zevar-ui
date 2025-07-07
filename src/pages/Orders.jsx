@@ -87,6 +87,7 @@ export default function Orders() {
   };
 
   const handleProductCheck = (orderId, productId, checked) => {
+    console.log("🔄 Product check change:", { orderId, productId, checked });
     setCheckedProducts((prev) => ({
       ...prev,
       [orderId]: {
@@ -95,6 +96,12 @@ export default function Orders() {
       },
     }));
   };
+
+  // Clear checkbox state when switching tabs
+  useEffect(() => {
+    console.log("🔄 Active tab changed to:", activeTab);
+    setCheckedProducts({});
+  }, [activeTab]);
 
   const refreshOrders = async () => {
     fetchOrders(pagination.current_page);
@@ -106,6 +113,13 @@ export default function Orders() {
   return (
     <AdminLayout>
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Orders</h1>
+      {/* Debug info for development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mb-4 p-2 bg-yellow-50 rounded text-xs">
+          <strong>Debug:</strong> Checked products: {JSON.stringify(checkedProducts)}
+        </div>
+      )}
+      
       <div className="flex gap-3 mb-6">
         {STATUS_TABS.map((status) => (
           <button

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AdminLayout } from "../components/layouts/AdminLayout";
 import { fetchTransactions } from "../api/transactions";
 
-export default function Transactions() {
+export default function OrderTransactions() {
   const [transactions, setTransactions] = useState([]);
   const [search, setSearch] = useState("");
   const [mode, setMode] = useState("");

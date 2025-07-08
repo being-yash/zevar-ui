@@ -12,7 +12,8 @@ import AdminLayout from "./components/layouts/AdminLayout";
 import AddVendorForm from "./components/AddVendorForm";
 import Settings from "./pages/Settings";
 import Vendors from "./pages/Vendors";
-import Transactions from "./pages/Transactions";
+import OrderTransactions from "./pages/OrderTransactions";
+import BankTransactions from "./pages/BankTransactions";
 
 function App() {
   const { user } = useAuth();
@@ -25,7 +26,8 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             <Route path="/orders/:id" element={<OrderDetail />} />
             <Route path="/vendors" element={<Vendors />} />
-            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/order-transactions" element={<OrderTransactions />} />
+            <Route path="/bank-transactions" element={<BankTransactions />} />
             <Route
               path="/vendors/add"
               element={
@@ -34,8 +36,7 @@ function App() {
                 </AdminLayout>
               }
             />
-            <Route path="/settings" element={ <Settings /> } />
-            {/* Add more routes as needed */}
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         ) : (
           <div className="flex justify-center items-center h-screen bg-blue-500">
